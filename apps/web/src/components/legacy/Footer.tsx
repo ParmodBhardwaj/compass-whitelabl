@@ -1,9 +1,9 @@
-import { copyrightLine } from '@/lib/brand';
-
 export function Footer() {
   return (
     <div className="footer">
-      <div>{copyrightLine()}</div>
+      <div>
+        <strong>Copyright</strong> &copy; {new Date().getFullYear()} by Hero MotoCorp. All rights reserved.
+      </div>
     </div>
   );
 }

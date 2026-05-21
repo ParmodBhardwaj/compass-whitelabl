@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { apiFetch, clearTokens } from '@/lib/auth';
-import { BRAND } from '@/lib/brand';
 
 interface NavNode {
   id: number;
@@ -336,8 +335,8 @@ export function AdminSidebar() {
       {/* Pinned logo */}
       <div className="admin-sidebar-logo">
         <img
-          src={BRAND.logoUrl}
-          alt={BRAND.name}
+          src="http://heronewlanding.local.com/frontend/img/logo.png"
+          alt="Hero"
           style={{ height: 32 }}
           onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
         />

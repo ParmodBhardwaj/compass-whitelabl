@@ -21,8 +21,6 @@ import { initDb, Op } from '@hero/db';
 import { HazardRequest, TpmEscalation } from '@hero/db/src/models/generated';
 import { sendMail } from '@hero/integrations/src/mail';
 
-const BRAND_NAME = process.env.BRAND_NAME ?? 'Compass';
-
 const DB_CONFIG = {
   host: process.env.DB_HOST ?? 'localhost',
   port: +(process.env.DB_PORT ?? 3306),
@@ -88,7 +86,7 @@ async function run() {
               <tr><td>Escalation Level</td><td>${escalateTo.replace('_', ' ')}</td></tr>
             </table>
             <p>Please take immediate action to resolve this hazard.</p>
-            <p style="color:#888;font-size:11px;">This is an automated message from ${BRAND_NAME}.</p>
+            <p style="color:#888;font-size:11px;">This is an automated message from Hero Compass.</p>
           `,
         });
         console.log(`  → Hazard #${hazardData.id}: email sent to ${targetEmail} (${escalateTo})`);

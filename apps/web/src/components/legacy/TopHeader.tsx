@@ -23,7 +23,7 @@ interface FavouriteRow {
 }
 
 /**
- * Top navigation bar — pixel-faithful replica of the legacy portal header.
+ * Top navigation bar — pixel-faithful replica of the legacy Hero portal header.
  *
  * Features:
  *   • Logo + hamburger sidebar toggle

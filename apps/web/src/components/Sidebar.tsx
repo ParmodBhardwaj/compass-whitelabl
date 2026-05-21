@@ -1,7 +1,7 @@
 const items = [
   'Search Apps',
   'Covid Resources',
-  'Virtual Showroom',
+  'Hero Virtual Showroom',
   'Tax Insight',
   'Employee Compliances',
   'Patent Management System',

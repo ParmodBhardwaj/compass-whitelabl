@@ -1,6 +1,6 @@
 'use client';
 /**
- * /portal/tcg — Talent & Capability Grid (TCG) landing.
+ * /portal/tcg — Hero Talent & Capability Grid (TCG) landing.
  * Mirrors legacy /tcg/tcg.html — reuses the R&D shared data set
  * (notice, joinees, competitor products) with TCG-specific
  * login-usage tracking.
@@ -74,7 +74,7 @@ export default function TcgPage() {
             </div>
             <div className="ibox-content">
               <p style={{ fontSize: 14, color: '#555', lineHeight: 1.6, marginBottom: 0 }}>
-                The Talent &amp; Capability Grid is our company-wide framework for mapping critical
+                The Hero Talent &amp; Capability Grid is our company-wide framework for mapping critical
                 skills, identifying capability gaps, and planning development journeys across departments.
                 Managers nominate critical roles, employees self-rate against the capability matrix,
                 and L&amp;D mines the gaps to design training cohorts.

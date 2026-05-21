@@ -6,7 +6,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { VisitorsService, AppointmentDto } from './visitors.service';
 import { ExcelService } from '../../common/excel/excel.service';
-import { reportTitle } from '../../common/brand';
 
 @Controller('visitors')
 @UseGuards(AuthGuard('jwt'))
@@ -37,7 +36,7 @@ export class VisitorsController {
     })) as any[];
     const buffer = await this.excel.sheet({
       name: 'Visitor Appointments',
-      title: reportTitle('Visitor Gate Pass Report'),
+      title: 'Hero Compass — Visitor Gate Pass Report',
       columns: [
         { header: 'Apt #',        key: 'id',                  width: 8 },
         { header: 'Company',      key: 'company',             width: 28 },

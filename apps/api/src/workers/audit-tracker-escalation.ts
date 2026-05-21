@@ -58,10 +58,8 @@ const MAIL_CONFIG = {
   port: +(process.env.MAIL_PORT ?? 25),
   user: process.env.MAIL_USER,
   pass: process.env.MAIL_PASS,
-  from: process.env.MAIL_FROM ?? 'noreply@example.com',
+  from: process.env.MAIL_FROM ?? 'noreply@herocompass.local',
 };
-
-const BRAND_NAME = process.env.BRAND_NAME ?? 'Compass';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -214,7 +212,7 @@ function buildHtml(trigger: Trigger, section: any, audit: any): string {
       <tr><td style="padding:8px;background:#f5f5f5;font-weight:bold">Status</td>
           <td style="padding:8px;border-bottom:1px solid #eee">${section.status ?? 'Open'}</td></tr>
     </table>
-    <p>Please log in to <strong>${BRAND_NAME} — Audit Tracker</strong> to update progress.</p>
+    <p>Please log in to <strong>Hero Compass — Audit Tracker</strong> to update progress.</p>
     <p style="margin-top:24px;font-size:12px;color:#999">
       This is an automated notification. Do not reply.
     </p>

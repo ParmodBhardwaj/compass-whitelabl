@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BRAND } from '../brand';
 
 export interface SheetColumn {
   header: string;
@@ -34,7 +33,7 @@ export interface SheetSpec {
  *     const buffer = await this.excel.workbook([
  *       {
  *         name: 'Training Scores',
- *         title: 'Training Score Report',
+ *         title: 'Hero Compass — Training Score Report',
  *         columns: [
  *           { header: 'Employee', key: 'empName', width: 25 },
  *           { header: 'Score',    key: 'totalScore', width: 12, format: v => Number(v).toFixed(2) },
@@ -74,7 +73,7 @@ export class ExcelService {
   async workbook(sheets: SheetSpec[]): Promise<Buffer> {
     const ExcelJS = await this.lib();
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     for (const spec of sheets) {

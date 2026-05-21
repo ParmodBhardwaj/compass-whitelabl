@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 import { apiFetch, clearTokens } from '@/lib/auth';
 import { resolveAvatar } from '@/lib/legacy-url';
 import { withHtml, resolveMenuUrl } from '@/lib/portal-url';
-import { BRAND } from '@/lib/brand';
 
 interface MenuItem {
   id: number;
@@ -111,7 +110,7 @@ function portalSegmentForAlias(alias?: string): string {
 const ADMIN_ROLE_IDS: number[] = [9];
 
 /**
- * Left sidebar — pixel-faithful replica of the legacy portal.
+ * Left sidebar — pixel-faithful replica of the legacy Hero portal.
  *
  * Features:
  *   • User card (avatar, name, designation, logout)
@@ -444,8 +443,8 @@ export function Sidebar() {
           <li className="nav-header logo-item">
             <a href="/portal" style={{ display: 'inline-block', lineHeight: 0 }}>
               <img
-                src={BRAND.logoUrl}
-                alt={BRAND.name}
+                src="http://heronewlanding.local.com/frontend/img/logo.png"
+                alt="Hero MotoCorp"
                 style={{ height: 40, maxWidth: 160, objectFit: 'contain' }}
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';

@@ -1,6 +1,284 @@
 {
-  "startedAt": "2026-05-21T11:09:16.406Z",
+  "startedAt": "2026-05-21T10:02:31.488Z",
   "suites": [
+    {
+      "name": "Audit",
+      "slug": "audit",
+      "results": [
+        {
+          "name": "GET /audit?userId=1 returns non-deleted audits",
+          "ok": true
+        },
+        {
+          "name": "GET /audit?status=open filter works",
+          "ok": true
+        },
+        {
+          "name": "GET /audit/meta/categories returns all categories",
+          "ok": true
+        },
+        {
+          "name": "GET /audit/meta/themes returns all themes",
+          "ok": true
+        },
+        {
+          "name": "GET /audit/reports/sections.xlsx returns workbook",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "D&I",
+      "slug": "dni",
+      "results": [
+        {
+          "name": "GET /events filters by storeId + status",
+          "ok": true
+        },
+        {
+          "name": "GET /events/categories returns category table",
+          "ok": true
+        },
+        {
+          "name": "GET /initiatives sorted by sort_order",
+          "ok": true
+        },
+        {
+          "name": "GET /featured filters active + DESC by date",
+          "ok": true
+        },
+        {
+          "name": "GET /newsletters active rows",
+          "ok": true
+        },
+        {
+          "name": "GET /videos active rows",
+          "ok": true
+        },
+        {
+          "name": "GET /dashboard returns all 5 collections",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "GuestHouse + CarPool + Sale/Rent",
+      "slug": "guest-house-carpool-salerent",
+      "results": [
+        {
+          "name": "GH: /guest-house/houses returns active houses",
+          "ok": true
+        },
+        {
+          "name": "GH: /guest-house/bookings?all=1 count matches",
+          "ok": true
+        },
+        {
+          "name": "CP: /carpool/offers?all=1 count matches",
+          "ok": true
+        },
+        {
+          "name": "CP: /carpool/locations returns all",
+          "ok": true
+        },
+        {
+          "name": "SR: /sale-rent/listings?all=1 active listings",
+          "ok": true
+        },
+        {
+          "name": "SR: /sale-rent/categories returns sale categories",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "Idea + ActivityTracker",
+      "slug": "idea-activity",
+      "results": [
+        {
+          "name": "IDEA: /idea/submissions?all=1 count matches",
+          "ok": true
+        },
+        {
+          "name": "IDEA: /idea/campaigns returns campaign table",
+          "ok": true
+        },
+        {
+          "name": "IDEA: /idea/campaigns/active returns only active",
+          "ok": true
+        },
+        {
+          "name": "ATR: /activity-tracker/tasks?all=1 active count",
+          "ok": true
+        },
+        {
+          "name": "ATR: /activity-tracker/programs returns all",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "Insurance + Tax",
+      "slug": "insurance-tax",
+      "results": [
+        {
+          "name": "INS: /documents active rows",
+          "ok": true,
+          "skipped": true,
+          "reason": "insurance_documents table missing from DB"
+        },
+        {
+          "name": "INS: /faqs active rows",
+          "ok": true,
+          "skipped": true,
+          "reason": "insurance_faqs table missing from DB"
+        },
+        {
+          "name": "INS: /hyperlinks active rows",
+          "ok": true,
+          "skipped": true,
+          "reason": "insurance_hyperlinks table missing from DB"
+        },
+        {
+          "name": "INS: /sections filters type=insurance",
+          "ok": true
+        },
+        {
+          "name": "INS: /dashboard sections.length matches DB",
+          "ok": true,
+          "skipped": true,
+          "reason": "depends on insurance_documents which is missing"
+        },
+        {
+          "name": "TAX: /documents active rows",
+          "ok": true
+        },
+        {
+          "name": "TAX: /faqs active rows",
+          "ok": true
+        },
+        {
+          "name": "TAX: /sections filters type=tax",
+          "ok": true
+        },
+        {
+          "name": "TAX: /dashboard sections + faqs present",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "Kaizen",
+      "slug": "kaizen",
+      "results": [
+        {
+          "name": "GET /kaizen?all=1 count matches DB",
+          "ok": true
+        },
+        {
+          "name": "GET /kaizen?status=raised filter works",
+          "ok": true
+        },
+        {
+          "name": "GET /kaizen/meta/pillars returns all pillars",
+          "ok": true
+        },
+        {
+          "name": "GET /kaizen/meta/sections returns all sections",
+          "ok": true
+        },
+        {
+          "name": "GET /kaizen/stats matches DB rollup",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "RnD",
+      "slug": "rnd",
+      "results": [
+        {
+          "name": "GET /notices returns active rows",
+          "ok": true
+        },
+        {
+          "name": "GET /joinees?storeId=19 filters by store + status",
+          "ok": true
+        },
+        {
+          "name": "GET /competitor-products filters by status=1",
+          "ok": true
+        },
+        {
+          "name": "GET /ceo-message returns Message row id=2",
+          "ok": true
+        },
+        {
+          "name": "GET /overview returns Message row id=3",
+          "ok": true
+        },
+        {
+          "name": "GET /dashboard aggregates all sections",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "TPM",
+      "slug": "tpm",
+      "results": [
+        {
+          "name": "GET /tpm/hazard?all=1 count matches DB",
+          "ok": true
+        },
+        {
+          "name": "GET /tpm/opl?all=1 count matches DB",
+          "ok": true
+        },
+        {
+          "name": "GET /tpm/meta/hazard-categories returns category table",
+          "ok": true
+        },
+        {
+          "name": "GET /tpm/meta/hazard-sub-categories returns sub-category table",
+          "ok": true
+        },
+        {
+          "name": "GET /tpm/meta/plants returns plants table",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "Training",
+      "slug": "training",
+      "results": [
+        {
+          "name": "GET /scores?all=1 count matches DB",
+          "ok": true
+        },
+        {
+          "name": "GET /categories returns type=training only",
+          "ok": true
+        },
+        {
+          "name": "GET /sub-categories filters by categoryId",
+          "ok": true
+        },
+        {
+          "name": "GET /leaderboard returns DESC totals",
+          "ok": true
+        },
+        {
+          "name": "GET /stats avgScore matches DB",
+          "ok": true
+        },
+        {
+          "name": "GET /league-dashboard structure",
+          "ok": true
+        }
+      ]
+    },
     {
       "name": "Visitors",
       "slug": "visitors",
@@ -19,8 +297,7 @@
         },
         {
           "name": "GET /stats matches DB rollup",
-          "ok": false,
-          "reason": "fetch failed"
+          "ok": true
         },
         {
           "name": "GET /appointments?status=pending applies filter",
@@ -33,7 +310,7 @@
       ]
     }
   ],
-  "totalPass": 5,
-  "totalFail": 1,
-  "finishedAt": "2026-05-21T11:09:47.949Z"
+  "totalPass": 60,
+  "totalFail": 0,
+  "finishedAt": "2026-05-21T10:02:59.749Z"
 }

@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Op } from '@hero/db';
-import { BRAND } from '../../common/brand';
 import {
   TrainingScore,
   KaizenRequest,
@@ -60,7 +59,7 @@ export class ReportService {
     const rows = await TrainingScore.findAll({ where, order: [['trainingDate', 'DESC']], raw: true });
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     const ws = wb.addWorksheet('Training Records');
@@ -120,7 +119,7 @@ export class ReportService {
     const rows = await KaizenRequest.findAll({ where, order: [['createdOn', 'DESC']], raw: true });
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     const ws = wb.addWorksheet('Kaizen Records');
@@ -186,7 +185,7 @@ export class ReportService {
     const rows = await OeeRequest.findAll({ where, order: [['shiftDate', 'DESC']], raw: true });
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     const ws = wb.addWorksheet('OEE Records');
@@ -276,7 +275,7 @@ export class ReportService {
     const rows = await MpRequest.findAll({ where, order: [['createdAt', 'DESC']], raw: true });
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     const ws = wb.addWorksheet('MP Sheet');
@@ -334,7 +333,7 @@ export class ReportService {
     const rows = await VisitorAppointment.findAll({ where, order: [['visitDate', 'DESC']], raw: true });
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = BRAND.productName;
+    wb.creator = 'Hero Compass';
     wb.created = new Date();
 
     const ws = wb.addWorksheet('Visitor Log');

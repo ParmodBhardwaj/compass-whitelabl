@@ -11,7 +11,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '@/lib/auth';
-import { BRAND } from '@/lib/brand';
 
 interface Visitor {
   id: number;
@@ -154,7 +153,7 @@ export default function GatePassPage() {
             }}>
               <div>
                 <div style={{ fontSize: 11, opacity: 0.85, textTransform: 'uppercase', letterSpacing: 1 }}>
-                  {BRAND.name} — Visitor Gate Pass
+                  Hero MotoCorp — Visitor Gate Pass
                 </div>
                 <div style={{ fontSize: 18, fontWeight: 700, marginTop: 2 }}>
                   {data.location?.locationName ?? data.location?.name ?? `Location #${a.visitorLocationId}`}

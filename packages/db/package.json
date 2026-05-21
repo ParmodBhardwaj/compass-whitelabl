@@ -1,0 +1,38 @@
+{
+  "name": "@hero/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./src/models/generated": {
+      "types": "./dist/models/generated/index.d.ts",
+      "default": "./dist/models/generated/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "lint": "eslint src",
+    "generate-models": "tsx scripts/generate-models-from-sql.ts",
+    "seed": "tsx scripts/seed.ts",
+    "load-dump": "tsx scripts/load-dump.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "sequelize": "^6.37.3",
+    "sequelize-typescript": "^2.1.6",
+    "mysql2": "^3.10.0",
+    "reflect-metadata": "^0.2.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.0",
+    "vitest": "^1.5.0"
+  }
+}

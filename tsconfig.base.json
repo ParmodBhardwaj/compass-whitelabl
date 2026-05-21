@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hero/db": ["packages/db/dist"],
+      "@hero/db/src/models/generated": ["packages/db/dist/models/generated"],
+      "@hero/auth": ["packages/auth/dist"],
+      "@hero/integrations": ["packages/integrations/dist"],
+      "@hero/ui": ["packages/ui/src"]
+    }
+  }
+}

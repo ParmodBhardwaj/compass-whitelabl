@@ -1,0 +1,26 @@
+{
+  "name": "hero-compass",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Hero Compass / ERP — Node + Next.js + NestJS + Sequelize re-platform of the Laminas PHP portal.",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "db:generate-models": "pnpm --filter @hero/db generate-models",
+    "db:seed": "pnpm --filter @hero/db seed",
+    "db:load-dump": "pnpm --filter @hero/db load-dump",
+    "api:dev": "pnpm --filter @hero/api dev",
+    "web:dev": "pnpm --filter @hero/web dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "prettier": "^3.2.5",
+    "@types/node": "^20.12.0"
+  }
+}

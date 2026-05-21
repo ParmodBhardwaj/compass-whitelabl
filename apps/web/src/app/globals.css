@@ -1,0 +1,19 @@
+/* Hero design baseline — pixel-faithful tokens to match legacy portal. */
+:root {
+  --hero-red: #e2231a;
+  --hero-red-dark: #b81b13;
+  --hero-pink: #fce4e4;
+  --hero-text: #2b2b2b;
+  --hero-muted: #6b6b6b;
+  --hero-bg: #ffffff;
+  --hero-border: #e6e6e6;
+  --hero-sidebar-w: 280px;
+  --hero-header-h: 80px;
+  --hero-radius: 12px;
+  --hero-font: 'Open Sans', 'Roboto', system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: var(--hero-font); color: var(--hero-text); background: var(--hero-bg); }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }

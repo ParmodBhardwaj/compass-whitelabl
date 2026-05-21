@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Res } from '@n
 import { Response } from 'express';
 import { AuditService } from './audit.service';
 import { ExcelService } from '../../common/excel/excel.service';
+import { reportTitle } from '../../common/brand';
 
 @Controller('audit')
 export class AuditController {
@@ -28,7 +29,7 @@ export class AuditController {
     });
     const buffer = await this.excel.sheet({
       name: 'Audit Sections',
-      title: 'Hero Compass — Audit Tracker Report',
+      title: reportTitle('Audit Tracker Report'),
       columns: [
         { header: 'Audit ID',          key: 'auditId',             width: 10 },
         { header: 'Audit',             key: 'auditName',           width: 28 },

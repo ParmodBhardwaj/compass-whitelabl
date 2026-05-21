@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { BRAND } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: 'Hero MotoCorp',
-  description: 'Hero Compass employee portal',
+  title: BRAND.productName,
+  description: `${BRAND.productName} — ${BRAND.tagline}`,
 };
 
 /**
- * Root layout that ships the legacy Inspinia / Hero CSS bundle verbatim
- * (downloaded under public/legacy/). All portal/admin pages inherit these
- * stylesheets, so the look matches http://heronewlanding.local.com/ 1:1.
+ * Root layout. Ships the legacy Inspinia CSS bundle verbatim under
+ * public/legacy/ so all portal/admin pages inherit the same look. Brand
+ * strings flow through @/lib/brand so the deployment can re-skin via env.
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

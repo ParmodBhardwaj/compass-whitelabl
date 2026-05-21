@@ -7,7 +7,7 @@
  */
 export const LEGACY_BASE =
   (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_LEGACY_URL) ||
-  'http://heronewlanding.local.com';
+  'http://localhost:8080';
 
 /**
  * Resolve a bare filename from the DB into a full legacy upload URL.

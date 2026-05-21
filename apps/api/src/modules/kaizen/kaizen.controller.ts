@@ -15,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { KaizenService } from './kaizen.service';
 import { ExcelService } from '../../common/excel/excel.service';
+import { reportTitle } from '../../common/brand';
 
 @Controller('kaizen')
 @UseGuards(AuthGuard('jwt'))
@@ -41,7 +42,7 @@ export class KaizenController {
     })) as any[];
     const buffer = await this.excel.sheet({
       name: 'Kaizens',
-      title: 'Hero Compass — Kaizen Report',
+      title: reportTitle('Kaizen Report'),
       columns: [
         { header: 'Kaizen No',  key: 'kaizenNo',      width: 14 },
         { header: 'Title',      key: 'title',         width: 32 },

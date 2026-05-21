@@ -27,7 +27,7 @@ export default function IsPortalPage() {
             </div>
             <div className="ibox-content">
               <p style={{ fontSize: 14, color: '#555' }}>
-                Central hub for information-security policies, incident reporting and security training at Hero MotoCorp.
+                Central hub for information-security policies, incident reporting and security training.
               </p>
             </div>
           </div>

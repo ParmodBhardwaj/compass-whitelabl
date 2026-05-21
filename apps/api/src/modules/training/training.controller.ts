@@ -6,6 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { TrainingService, TrainingScoreDto } from './training.service';
 import { ExcelService } from '../../common/excel/excel.service';
+import { reportTitle } from '../../common/brand';
 
 @Controller('training')
 @UseGuards(AuthGuard('jwt'))
@@ -30,7 +31,7 @@ export class TrainingController {
     });
     const buffer = await this.excel.sheet({
       name: 'Score Report',
-      title: 'Hero Compass — Training Score Report',
+      title: reportTitle('Training Score Report'),
       columns: [
         { header: 'Emp ID',      key: 'empId',       width: 10 },
         { header: 'Employee',    key: 'empName',     width: 28 },
@@ -61,7 +62,7 @@ export class TrainingController {
     });
     const buffer = await this.excel.sheet({
       name: 'Detailed Report',
-      title: 'Hero Compass — Training Detailed Report',
+      title: reportTitle('Training Detailed Report'),
       columns: [
         { header: 'ID',          key: 'id',          width: 8 },
         { header: 'Date',        key: 'date',        width: 12 },

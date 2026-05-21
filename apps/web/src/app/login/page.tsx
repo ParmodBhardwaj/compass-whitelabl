@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { setTokens } from '@/lib/auth';
+import { BRAND, copyrightLine } from '@/lib/brand';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -43,7 +44,8 @@ export default function LoginPage() {
 
         .login-page {
           min-height: 100vh;
-          background: url('http://heronewlanding.local.com/img/background-login.jpg') center center / cover no-repeat;
+          background:
+            linear-gradient(135deg, #1f2a44 0%, #2c3e50 50%, #34495e 100%);
           display: flex;
           flex-direction: column;
           font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -205,12 +207,12 @@ export default function LoginPage() {
           {/* ── Left: branding ─────────────────────────────────────────────── */}
           <div className="login-left">
             <img
-              src="http://heronewlanding.local.com/frontend/img/logo.png"
-              alt="Hero MotoCorp"
+              src={BRAND.logoUrl}
+              alt={BRAND.name}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
             <p className="login-tagline">
-              Welcome to Hero <span>Family!</span>
+              {BRAND.welcomeMessage} to {BRAND.name} <span>Family!</span>
             </p>
           </div>
 
@@ -284,7 +286,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="login-footer">
-          <strong>Copyright</strong> Hero MotoCorp © 2014-2015
+          {copyrightLine()}
         </div>
       </div>
     </>

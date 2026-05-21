@@ -14,7 +14,7 @@ export const SEQUELIZE = 'SEQUELIZE';
         initDb({
           host: cfg.get<string>('DB_HOST', '127.0.0.1'),
           port: Number(cfg.get<string>('DB_PORT', '3306')),
-          database: cfg.get<string>('DB_NAME', 'heronewlanding'),
+          database: cfg.get<string>('DB_NAME', 'compass'),
           username: cfg.get<string>('DB_USER', 'root'),
           password: cfg.get<string>('DB_PASSWORD', ''),
           logging: cfg.get<string>('NODE_ENV') === 'development',

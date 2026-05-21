@@ -1,3 +1,5 @@
+import { BRAND } from '@/lib/brand';
+
 export function TopHeader() {
   return (
     <header
@@ -12,7 +14,7 @@ export function TopHeader() {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={{ width: 20, height: 20, background: 'var(--hero-red)', clipPath: 'polygon(0 100%, 50% 0, 100% 100%)' }} />
-        <strong style={{ color: 'var(--hero-red)', fontSize: 22 }}>Hero</strong>
+        <strong style={{ color: 'var(--hero-red)', fontSize: 22 }}>{BRAND.name}</strong>
       </div>
       <button aria-label="menu" style={{ background: '#eee', width: 36, height: 36, border: 0, borderRadius: 18 }}>≡</button>
       <input

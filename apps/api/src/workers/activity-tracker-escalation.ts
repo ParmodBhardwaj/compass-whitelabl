@@ -45,8 +45,10 @@ const MAIL_CONFIG = {
   port: +(process.env.MAIL_PORT ?? 25),
   user: process.env.MAIL_USER,
   pass: process.env.MAIL_PASS,
-  from: process.env.MAIL_FROM ?? 'noreply@herocompass.local',
+  from: process.env.MAIL_FROM ?? 'noreply@example.com',
 };
+
+const BRAND_NAME = process.env.BRAND_NAME ?? 'Compass';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -109,9 +111,9 @@ function buildHtml(trigger: EscalationTrigger, task: any, program: any): string 
           <td style="padding:8px;border-bottom:1px solid #eee">${task.status ?? 'open'}</td></tr>
     </table>
     ${task.shortDescription ? `<p style="color:#555">${task.shortDescription}</p>` : ''}
-    <p>Please log in to <strong>Hero Compass</strong> to take the required action.</p>
+    <p>Please log in to <strong>${BRAND_NAME}</strong> to take the required action.</p>
     <p style="margin-top:24px;font-size:12px;color:#999">
-      This is an automated notification from the Hero Compass Activity Tracker.
+      This is an automated notification from the ${BRAND_NAME} Activity Tracker.
     </p>
   </div>
 </div>`;

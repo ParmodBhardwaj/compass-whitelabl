@@ -23,7 +23,7 @@ import {
  * Conventions:
  *   - role_id = 9 is "Super Admin" (the only global admin role; protected from delete).
  *   - is_fixed = '1' marks roles that ship with the system and shouldn't be deleted.
- *   - store_id = 1 is the main "Hero MotoCorp" store; multi-store can come later.
+ *   - store_id = 1 is the main portal store; multi-store can come later.
  */
 @Injectable()
 export class AclService {

@@ -1,6 +1,6 @@
 'use client';
 /**
- * /portal/hm3h — Hero Manufacturing 3rd Horizon (HM3H) landing.
+ * /portal/hm3h — Manufacturing 3rd Horizon (HM3H) landing.
  * Mirrors legacy /hm3h/home.html.
  *
  * Backed by hm3h_pillar, hm3h_steering_committee, hm3h_kpi_data, etc.
@@ -30,7 +30,7 @@ export default function Hm3hHomePage() {
             <div className="ibox-title">
               <h5>
                 <i className="fa fa-cubes" style={{ marginRight: 8, color: '#1ab394' }} />
-                HM3H — Hero Manufacturing 3rd Horizon
+                HM3H — Manufacturing 3rd Horizon
               </h5>
             </div>
             <div className="ibox-content">

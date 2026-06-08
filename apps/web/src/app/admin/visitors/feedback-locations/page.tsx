@@ -16,17 +16,30 @@ export default function LocationAdminPage() {
       title="Visitors — Feedback Locations / Departments"
       entityName="Location"
       breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Feedback Location Department'}]}
-      apiPath="/visitor-master/feedback-locations"
-      blank={{'locationId':0,'departmentId':0}}
-      searchableKeys={["locationId"]}
+      apiPath="/visitors/admin/feedback-location-dept"
+      blank={{ locationId: 0, departmentId: 0, status: '1' }}
+      searchableKeys={['locationId']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'Location ID', cell: (r) => r.locationId ?? r.location_id },
-        { header: 'Department ID', cell: (r) => r.departmentId ?? r.department_id }
+        { header: 'Location Id', cell: (r) => r.locationId },
+        { header: 'Department Id', cell: (r) => r.departmentId },
+        {
+          header: 'Status', width: 90,
+          cell: (r) => (
+            <span style={{
+              background: r.status === '1' ? '#1ab394' : '#ed5565',
+              color: '#fff', borderRadius: 10, padding: '2px 10px',
+              fontSize: 11, fontWeight: 700,
+            }}>
+              {r.status === '1' ? 'Active' : 'Inactive'}
+            </span>
+          ),
+        },
       ]}
       fields={[
-        { name: 'locationId', label: 'Location ID', type: 'number', required: true },
-        { name: 'departmentId', label: 'Department ID', type: 'number' }
+        { name: 'locationId',   label: 'Location Id',   type: 'number', required: true },
+        { name: 'departmentId', label: 'Department Id', type: 'number', required: true },
+        { name: 'status',       label: 'Status',        type: 'select', options: [{ value: '1', label: 'Active' }, { value: '0', label: 'Inactive' }] },
       ]}
     />
   );

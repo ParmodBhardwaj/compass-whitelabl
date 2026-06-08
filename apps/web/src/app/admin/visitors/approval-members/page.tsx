@@ -1,32 +1,45 @@
 'use client';
+/**
+ * /admin/visitors/approval-members — Who can approve visitor passes per
+ * location, optionally restricted by pass colour. Backs `visitor_approval_members`.
+ */
 import { MasterDataPanel } from '@/components/legacy/MasterDataPanel';
 
-interface Member {
-  id: number;
-  [k: string]: any;
-}
+interface Row { id: number; [k: string]: any }
 
-/**
- * /admin/visitors/approval-members — auto-generated portal admin page.
- * Edit via tools/gen-admin-pages.mjs to keep config consistent.
- */
-export default function MemberAdminPage() {
+const PASS_OPTIONS = [
+  { value: 'all',   label: 'All' },
+  { value: 'Red',   label: 'Red' },
+  { value: 'Green', label: 'Green' },
+  { value: 'Blue',  label: 'Blue' },
+];
+
+export default function ApprovalMembersAdminPage() {
   return (
-    <MasterDataPanel<Member>
+    <MasterDataPanel<Row>
       title="Visitors — Approval Members"
-      entityName="Member"
-      breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Approval Members'}]}
-      apiPath="/visitor-master/approval-members"
-      blank={{'userId':0,'locationId':0}}
-      searchableKeys={["userId"]}
+      entityName="Approval Member"
+      breadcrumb={[{ label: 'Home', href: '/admin' }, { label: 'Visitors' }, { label: 'Approval Members' }]}
+      apiPath="/visitors/admin/approval-members"
+      blank={{ empId: 0, locationId: 0, passTypeApproval: 'all' }}
+      searchableKeys={['empId']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'User ID', cell: (r) => r.userId ?? r.user_id },
-        { header: 'Location ID', cell: (r) => r.locationId ?? r.location_id }
+        { header: 'Employee Id', cell: (r) => r.empId },
+        { header: 'Location Id', cell: (r) => r.locationId },
+        {
+          header: 'Approves',
+          cell: (r) => (
+            <span className={`label label-${r.passTypeApproval === 'Red' ? 'danger' : r.passTypeApproval === 'Green' ? 'success' : r.passTypeApproval === 'Blue' ? 'primary' : 'default'}`}>
+              {r.passTypeApproval}
+            </span>
+          ),
+        },
       ]}
       fields={[
-        { name: 'userId', label: 'User ID', type: 'number', required: true },
-        { name: 'locationId', label: 'Location ID', type: 'number' }
+        { name: 'empId',            label: 'Employee Id',     type: 'number', required: true },
+        { name: 'locationId',       label: 'Location Id',     type: 'number', required: true },
+        { name: 'passTypeApproval', label: 'Pass Type Scope', type: 'select', options: PASS_OPTIONS },
       ]}
     />
   );

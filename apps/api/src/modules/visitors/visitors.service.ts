@@ -298,6 +298,196 @@ export class VisitorsService {
     return VisitorBatches.findAll({ where, order: [['id', 'DESC']] });
   }
 
+  /**
+   * Pending-for-Card list — approved appointments where the visitor hasn't
+   * checked in yet. Each row is a (visitor, appointment) pair so the table
+   * shows one row per visitor (matches legacy
+   * AppointmentStatusController::indexAction shape).
+   */
+  async pendingForCard(opts: { contactPerson?: number; locationId?: number; all?: boolean } = {}) {
+    return this.flattenAppointmentVisitors({
+      ...opts,
+      requestStatus: 'approved',
+      checkinNull: true,
+    });
+  }
+
+  /**
+   * Pending-for-Checkout list — appointments where visitors have checked in
+   * but not yet checked out. Mirrors legacy CheckoutPendingController.
+   */
+  async pendingForCheckout(opts: { contactPerson?: number; locationId?: number; all?: boolean } = {}) {
+    return this.flattenAppointmentVisitors({
+      ...opts,
+      requestStatus: 'approved',
+      checkinNotNull: true,
+      checkoutNull: true,
+    });
+  }
+
+  /**
+   * Pending-for-Approval inbox for the logged-in employee — appointments
+   * where they are the contact_person (and the appointment is still pending).
+   * Mirrors legacy EmployeeApprovalController::indexAction.
+   */
+  async pendingForApproval(contactPerson: number, opts: { locationId?: number } = {}) {
+    const where: any = {
+      requestStatus: 'pending',
+      contactPerson,
+    };
+    if (opts.locationId) where.visitorLocationId = opts.locationId;
+    const appts = await VisitorAppointment.findAll({
+      where,
+      order: [['validFromDate', 'ASC'], ['validFromTime', 'ASC']],
+    });
+    if (!appts.length) return [];
+    const apptIds = (appts as any[]).map((a) => a.id);
+    const visitors = await VisitorAppointmentUsers.findAll({
+      where: { appointmentId: { [Op.in]: apptIds } } as any,
+      raw: true,
+    }) as any[];
+    const locIds = [...new Set((appts as any[]).map((a) => a.visitorLocationId).filter(Boolean))];
+    const locs = locIds.length
+      ? await VisitorLocations.findAll({ where: { id: { [Op.in]: locIds } } as any, raw: true }) as any[]
+      : [];
+    const locById = new Map(locs.map((l) => [l.id, l.locationName ?? l.name]));
+    const byAppt = new Map<number, any[]>();
+    for (const v of visitors) {
+      if (!byAppt.has(v.appointmentId)) byAppt.set(v.appointmentId, []);
+      byAppt.get(v.appointmentId)!.push(v);
+    }
+    return (appts as any[]).map((a) => ({
+      appointmentId: a.id,
+      visitors: byAppt.get(a.id) ?? [],
+      company: a.company,
+      hostName: null, // employee name lookup — populated by frontend via /employees/:id if needed
+      contactPerson: a.contactPerson,
+      visitorLocationId: a.visitorLocationId,
+      locationName: locById.get(a.visitorLocationId) ?? `#${a.visitorLocationId}`,
+      validFromDate: a.validFromDate,
+      validFromTime: a.validFromTime,
+      validToDate: a.validToDate,
+      validToTime: a.validToTime,
+      passType: a.passType,
+      gateName: (a as any).gateName,
+      requestStatus: a.requestStatus,
+      requestCreatedBy: a.requestCreatedBy,
+      passApprover: (a as any).passApprover ?? null,
+    }));
+  }
+
+  /**
+   * Common flattener used by `pendingForCard` + `pendingForCheckout`.
+   * Joins visitor_appointment with visitor_appointment_users and filters by
+   * the supplied checkin/checkout nullability flags.
+   */
+  private async flattenAppointmentVisitors(opts: {
+    contactPerson?: number;
+    locationId?: number;
+    all?: boolean;
+    requestStatus?: string;
+    checkinNull?: boolean;
+    checkinNotNull?: boolean;
+    checkoutNull?: boolean;
+  }) {
+    const apptWhere: any = {};
+    if (opts.requestStatus) apptWhere.requestStatus = opts.requestStatus;
+    if (opts.locationId) apptWhere.visitorLocationId = opts.locationId;
+    if (!opts.all && opts.contactPerson) apptWhere.contactPerson = opts.contactPerson;
+
+    const visitorWhere: any = {};
+    if (opts.checkinNull) visitorWhere.visitorCheckin = { [Op.is]: null };
+    if (opts.checkinNotNull) visitorWhere.visitorCheckin = { [Op.not]: null };
+    if (opts.checkoutNull) visitorWhere.visitorCheckout = { [Op.is]: null };
+
+    const visitors = await VisitorAppointmentUsers.findAll({
+      where: visitorWhere,
+      raw: true,
+    }) as any[];
+    if (!visitors.length) return [];
+
+    const apptIds = [...new Set(visitors.map((v) => v.appointmentId))];
+    const appts = await VisitorAppointment.findAll({
+      where: { ...apptWhere, id: { [Op.in]: apptIds } } as any,
+      raw: true,
+    }) as any[];
+    const apptById = new Map(appts.map((a) => [a.id, a]));
+
+    const locIds = [...new Set(appts.map((a) => a.visitorLocationId).filter(Boolean))];
+    const locs = locIds.length
+      ? await VisitorLocations.findAll({ where: { id: { [Op.in]: locIds } } as any, raw: true }) as any[]
+      : [];
+    const locById = new Map(locs.map((l) => [l.id, l.locationName ?? l.name]));
+
+    // Filter visitors whose appointment didn't pass the appt filter.
+    const out = [] as any[];
+    for (const v of visitors) {
+      const a = apptById.get(v.appointmentId);
+      if (!a) continue;
+      out.push({
+        id: v.id,
+        appointmentId: a.id,
+        visitorId: v.id,
+        visitorName: v.visitorName,
+        visitorMobile: v.mobile,
+        visitorEmail: v.visitorEmail,
+        visitorCheckin: v.visitorCheckin,
+        visitorCheckout: v.visitorCheckout,
+        company: a.company,
+        visitorLocationId: a.visitorLocationId,
+        locationName: locById.get(a.visitorLocationId) ?? `#${a.visitorLocationId}`,
+        appStartDate: `${a.validFromDate ?? ''} ${a.validFromTime ?? ''}`.trim(),
+        appEndDate:   `${a.validToDate ?? ''} ${a.validToTime ?? ''}`.trim(),
+        validFromDate: a.validFromDate,
+        validFromTime: a.validFromTime,
+        validToDate: a.validToDate,
+        validToTime: a.validToTime,
+        gateName: a.gateName,
+        passType: a.passType,
+        requestStatus: a.requestStatus,
+      });
+    }
+    return out;
+  }
+
+  /**
+   * Today's pending appointments — shown in the right-hand sidebar of the
+   * Add Appointment screen so the user can see overlaps before booking.
+   * Matches legacy `AppointmentController::addAction` $todayAppointments.
+   */
+  async todayPendingAppointments(contactPerson?: number, locationId?: number) {
+    const today = new Date().toISOString().slice(0, 10);
+    const where: any = {
+      validFromDate: today,
+      requestStatus: { [Op.in]: ['pending', 'approved'] },
+    };
+    if (contactPerson) where.contactPerson = contactPerson;
+    if (locationId) where.visitorLocationId = locationId;
+    const appts = await VisitorAppointment.findAll({
+      where,
+      order: [['validFromTime', 'ASC']],
+      limit: 25,
+    });
+    if (!appts.length) return [];
+    const apptIds = (appts as any[]).map((a) => a.id);
+    const visitors = await VisitorAppointmentUsers.findAll({
+      where: { appointmentId: { [Op.in]: apptIds } } as any,
+      raw: true,
+    }) as any[];
+    const byAppt = new Map<number, any[]>();
+    for (const v of visitors) {
+      if (!byAppt.has(v.appointmentId)) byAppt.set(v.appointmentId, []);
+      byAppt.get(v.appointmentId)!.push(v);
+    }
+    return (appts as any[]).map((a) => ({
+      id: a.id,
+      time: a.validFromTime,
+      company: a.company,
+      requestStatus: a.requestStatus,
+      visitors: byAppt.get(a.id) ?? [],
+    }));
+  }
+
   async stats(opts: { contactPerson?: number } = {}) {
     const base: any = {};
     if (opts.contactPerson) base.contactPerson = opts.contactPerson;

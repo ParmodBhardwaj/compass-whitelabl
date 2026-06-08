@@ -1,9 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { setTokens } from '@/lib/auth';
+import { useSearchParams } from 'next/navigation';
+import { setTokens, safeNext } from '@/lib/auth';
 import { BRAND, copyrightLine } from '@/lib/brand';
 
 export default function LoginPage() {
+  const sp = useSearchParams();
+  // `?next=/portal/visitors/appointment/add` — sanitized to a same-origin path.
+  const nextUrl = safeNext(sp.get('next'), '/portal');
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +31,8 @@ export default function LoginPage() {
       }
       const data = await res.json();
       setTokens({ accessToken: data.accessToken, refreshToken: data.refreshToken });
-      window.location.href = '/portal';
+      // Honor `?next=` so a user who hit a deep link before login lands there.
+      window.location.href = nextUrl;
     } catch {
       setError('Unable to connect. Please check your network and try again.');
     } finally {
@@ -272,8 +278,18 @@ export default function LoginPage() {
                   }
                 </button>
 
-                {/* Google SSO */}
-                <a href="/api/v2/auth/google" className="login-btn-google">
+                {/* Google SSO. We stash `next` in sessionStorage so the
+                    post-OAuth callback can read it back if it lands on /login
+                    or any client-side route. Passing it through OAuth state
+                    needs server-side wiring not done yet — sessionStorage is
+                    the pragmatic fallback. */}
+                <a
+                  href="/api/v2/auth/google"
+                  className="login-btn-google"
+                  onClick={() => {
+                    try { sessionStorage.setItem('postLoginRedirect', nextUrl); } catch {}
+                  }}
+                >
                   <span style={{ fontWeight: 700, fontSize: 15 }}>G+</span>
                   Sign In with Google
                 </a>

@@ -16,17 +16,17 @@ export default function FieldAdminPage() {
       title="Visitors — Disabled Fields"
       entityName="Field"
       breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Disabled Fields'}]}
-      apiPath="/visitor-master/disabled-fields"
-      blank={{'fieldName':'','locationId':0}}
-      searchableKeys={["fieldName"]}
+      apiPath="/visitors/admin/disabled-fields"
+      blank={{ fieldName: '', locationId: 0 }}
+      searchableKeys={['fieldName']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'Field Name', cell: (r) => r.fieldName ?? r.field_name },
-        { header: 'Location ID', cell: (r) => r.locationId ?? r.location_id }
+        { header: 'Field Name', cell: (r) => <code style={{ fontSize: 12 }}>{r.fieldName}</code> },
+        { header: 'Location Id', cell: (r) => r.locationId },
       ]}
       fields={[
-        { name: 'fieldName', label: 'Field Name', required: true },
-        { name: 'locationId', label: 'Location ID', type: 'number' }
+        { name: 'fieldName',  label: 'Field Name (DB column / form key)', required: true, placeholder: 'e.g. mealAllowed' },
+        { name: 'locationId', label: 'Location Id', type: 'number', required: true },
       ]}
     />
   );

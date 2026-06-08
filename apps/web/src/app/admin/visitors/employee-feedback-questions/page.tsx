@@ -1,23 +1,22 @@
 'use client';
 /**
- * /admin/visitors/feedback-questions — Visitor feedback questions.
- * Backs `visitor_feedback_questions` filtered to `type='visitor'`.
+ * /admin/visitors/employee-feedback-questions — Employee feedback questions.
+ * Backs `visitor_feedback_questions` filtered to `type='employee'`.
  *
- * Sibling page at /admin/visitors/employee-feedback-questions uses
- * `type='employee'` against the same table.
+ * Companion page to /admin/visitors/feedback-questions (visitor-side).
  */
 import { MasterDataPanel } from '@/components/legacy/MasterDataPanel';
 
 interface Row { id: number; [k: string]: any }
 
-export default function VisitorFeedbackQuestionsPage() {
+export default function EmployeeFeedbackQuestionsPage() {
   return (
     <MasterDataPanel<Row>
-      title="Visitors — Visitor Feedback Questions"
+      title="Visitors — Employee Feedback Questions"
       entityName="Question"
-      breadcrumb={[{ label: 'Home', href: '/admin' }, { label: 'Visitors' }, { label: 'Visitor Feedback Questions' }]}
-      apiPath="/visitors/admin/feedback-questions?type=visitor"
-      blank={{ questionDescription: '', type: 'visitor', questionRating: 5, sortOrder: 0, status: '1' }}
+      breadcrumb={[{ label: 'Home', href: '/admin' }, { label: 'Visitors' }, { label: 'Employee Feedback Questions' }]}
+      apiPath="/visitors/admin/feedback-questions?type=employee"
+      blank={{ questionDescription: '', type: 'employee', questionRating: 5, sortOrder: 0, status: '1' }}
       searchableKeys={['questionDescription']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
@@ -41,7 +40,7 @@ export default function VisitorFeedbackQuestionsPage() {
         { name: 'questionDescription', label: 'Question', type: 'textarea', required: true },
         { name: 'questionRating',      label: 'Max Rating (e.g. 5)', type: 'number' },
         { name: 'sortOrder',           label: 'Sort Order', type: 'number' },
-        { name: 'type',                label: 'Type', type: 'select', options: [{ value: 'visitor', label: 'Visitor' }, { value: 'employee', label: 'Employee' }] },
+        { name: 'type',                label: 'Type', type: 'select', options: [{ value: 'employee', label: 'Employee' }, { value: 'visitor', label: 'Visitor' }] },
         { name: 'status',              label: 'Status', type: 'select', options: [{ value: '1', label: 'Enable' }, { value: '0', label: 'Disable' }] },
       ]}
     />

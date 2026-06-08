@@ -43,6 +43,39 @@ export async function refresh(): Promise<string | null> {
   return data.accessToken;
 }
 
+/**
+ * Build a /login URL that remembers where the user was trying to go, so the
+ * login page can send them back after authenticating.
+ *
+ * Guards against open-redirect: only same-origin relative paths (starting with
+ * "/" but not "//") survive; /login and /api/* are skipped to avoid loops.
+ */
+export function loginUrlWithNext(): string {
+  if (typeof window === 'undefined') return '/login';
+  const here = window.location.pathname + window.location.search + window.location.hash;
+  const safe =
+    here.startsWith('/') &&
+    !here.startsWith('//') &&
+    !here.startsWith('/login') &&
+    !here.startsWith('/api/');
+  return safe ? `/login?next=${encodeURIComponent(here)}` : '/login';
+}
+
+/**
+ * Validate a `next` value pulled out of the login URL. Same allow-list as
+ * `loginUrlWithNext` — relative, same-origin, not a login or API path.
+ */
+export function safeNext(raw: string | null | undefined, fallback = '/portal'): string {
+  if (!raw) return fallback;
+  let v: string;
+  try { v = decodeURIComponent(raw); } catch { return fallback; }
+  if (!v.startsWith('/')) return fallback;
+  if (v.startsWith('//')) return fallback;
+  if (v.startsWith('/login')) return fallback;
+  if (v.startsWith('/api/')) return fallback;
+  return v;
+}
+
 /** Client-side wrapper that adds the bearer token automatically. */
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = getToken();
@@ -58,7 +91,7 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
       headers.authorization = `Bearer ${fresh}`;
       res = await fetch(`/api/v2${path}`, { ...init, headers });
     } else {
-      window.location.href = '/login';
+      window.location.href = loginUrlWithNext();
       throw new Error('unauthorized');
     }
   }

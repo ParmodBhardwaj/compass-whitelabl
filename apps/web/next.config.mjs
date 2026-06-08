@@ -32,6 +32,21 @@ const nextConfig = {
       { source: '/portal/:path*.html', destination: '/portal/:path*' },
       { source: '/admin/:path*.html', destination: '/admin/:path*' },
 
+      // ── Visitor admin: legacy camelCase URLs from `store_modules` →
+      //    our kebab-case Next.js pages. So the AdminSidebar menu items
+      //    (rendered from the DB) navigate to the right page.
+      { source: '/admin/visitors/instruction',                destination: '/admin/visitors/instructions' },
+      { source: '/admin/visitors/approvalMembers',            destination: '/admin/visitors/approval-members' },
+      { source: '/admin/visitors/disabledFields',             destination: '/admin/visitors/disabled-fields' },
+      { source: '/admin/visitors/securityMembers',            destination: '/admin/visitors/security-members' },
+      { source: '/admin/visitors/canteenMember',              destination: '/admin/visitors/canteen-members' },
+      { source: '/admin/visitors/receptionMember',            destination: '/admin/visitors/reception-members' },
+      { source: '/admin/visitors/feedbackLocationDepartment', destination: '/admin/visitors/feedback-locations' },
+      { source: '/admin/visitors/question',                   destination: '/admin/visitors/feedback-questions' },
+      { source: '/admin/visitors/visitorPass',                destination: '/admin/visitors/pass-types' },
+      { source: '/admin/visitors/gradePassVisible',           destination: '/admin/visitors/grades' },
+      { source: '/admin/visitors/employeeQuestion',           destination: '/admin/visitors/employee-feedback-questions' },
+
       // ── Legacy portal frontend_url rewrites ────────────────────────────
       // Every row in `acl_stores.frontend_url` is the URL that PHP serves
       // at the root for that portal. We rewrite each one to its Next.js
@@ -45,23 +60,26 @@ const nextConfig = {
       { source: '/tpm/hazard.html',         destination: '/portal/tpm/hazard' },
       { source: '/audit/dashboard.html',    destination: '/portal/audit' },
       { source: '/visitors/home.html',                       destination: '/portal/visitors' },
+
       // Visitor module — sub-page parity with legacy /visitors/*.html.
+      // Top-level legacy URLs (no /portal/ prefix) → dedicated portal pages.
       { source: '/visitors/visitor-request.html',            destination: '/portal/visitors' },
-      { source: '/visitors/visitor-appointment-status.html', destination: '/portal/visitors' },
+      { source: '/visitors/appointment.html',                destination: '/portal/visitors/appointment' },
       { source: '/visitors/appointment/add.html',            destination: '/portal/visitors/appointment/add' },
+      { source: '/visitors/appointment-status.html',         destination: '/portal/visitors/appointment-status' },
+      { source: '/visitors/visitor-appointment-status.html', destination: '/portal/visitors/appointment-status' },
+      { source: '/visitors/employee-approval.html',          destination: '/portal/visitors/employee-approval' },
+      { source: '/visitors/checkout-pending.html',           destination: '/portal/visitors/checkout-pending' },
       { source: '/visitors/frequent-visitor.html',           destination: '/portal/visitors/frequent' },
       { source: '/visitors/pending-employee-feedback.html',  destination: '/portal/visitors/feedback' },
       { source: '/visitors/visitor-pass.html',               destination: '/portal/visitors' },
 
       // ── Sidebar-menu URL parity for Visitor portal ────────────────────
       // The legacy `menu.url` values for store=13 use names that don't 1:1
-      // match our new portal pages. The sidebar resolver now produces
-      // /portal/visitors/<legacy-url> for these — we route each to its
-      // closest existing Next.js page so the menu actually navigates.
-      { source: '/portal/visitors/appointment',                     destination: '/portal/visitors' },
-      { source: '/portal/visitors/appointment-status',              destination: '/portal/visitors' },
-      { source: '/portal/visitors/employee-approval',               destination: '/portal/visitors' },
-      { source: '/portal/visitors/checkout-pending',                destination: '/portal/visitors' },
+      // match our new portal pages. The sidebar resolver produces
+      // /portal/visitors/<legacy-url> for those — route each to its closest
+      // page. (The four new dedicated pages already live at their natural
+      // paths, so no rewrites are needed for them.)
       { source: '/portal/visitors/function-report',                 destination: '/portal/visitors/feedback' },
       { source: '/portal/visitors/employee-feedback-report',        destination: '/portal/visitors/feedback' },
       { source: '/portal/visitors/overall-feedback-report',         destination: '/portal/visitors/feedback' },

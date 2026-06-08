@@ -10,3 +10,6 @@ coverage
 .DS_Store
 storage/
 packages/db/src/models/generated/
+# Build / run artifacts that shouldn't be in version control
+*.tsbuildinfo
+tools/parity/last-run.json

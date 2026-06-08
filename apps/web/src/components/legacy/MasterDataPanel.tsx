@@ -115,10 +115,15 @@ export function MasterDataPanel<T extends Record<string, any>>(props: Props<T>) 
     setMsg(null);
     try {
       const id = (form as any).id;
+      // Split `apiPath` so the query string (if any) survives mutating verbs.
+      // GET still uses the full path so list-scoped filters like `?type=visitor`
+      // continue to work; POST/PUT/DELETE drop the query string but keep the
+      // path segment.
+      const [base] = apiPath.split('?');
       if (view === 'add') {
-        await apiFetch(apiPath, { method: 'POST', body: JSON.stringify(form) });
+        await apiFetch(base, { method: 'POST', body: JSON.stringify(form) });
       } else if (id != null) {
-        await apiFetch(`${apiPath}/${id}`, { method: 'PUT', body: JSON.stringify(form) });
+        await apiFetch(`${base}/${id}`, { method: 'PUT', body: JSON.stringify(form) });
       }
       setMsg({ type: 'success', text: `${noun} saved successfully` });
       setView('list');
@@ -134,7 +139,8 @@ export function MasterDataPanel<T extends Record<string, any>>(props: Props<T>) 
     const id = rowKey(r);
     if (!confirm(`Delete this ${noun.toLowerCase()}?`)) return;
     try {
-      await apiFetch(`${apiPath}/${id}`, { method: 'DELETE' });
+      const [base] = apiPath.split('?');
+      await apiFetch(`${base}/${id}`, { method: 'DELETE' });
       load();
     } catch (e: any) {
       alert(e?.message ?? 'Delete failed');

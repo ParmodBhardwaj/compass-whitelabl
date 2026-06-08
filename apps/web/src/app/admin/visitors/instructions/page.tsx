@@ -1,42 +1,33 @@
 'use client';
+/**
+ * /admin/visitors/instructions — Visitor entry instructions (per location, hindi+english).
+ * Backs `visitor_instructions`.
+ */
 import { MasterDataPanel } from '@/components/legacy/MasterDataPanel';
 
-interface Instruction {
-  id: number;
-  [k: string]: any;
-}
+interface Row { id: number; [k: string]: any }
 
-/**
- * /admin/visitors/instructions — auto-generated portal admin page.
- * Edit via tools/gen-admin-pages.mjs to keep config consistent.
- */
-export default function InstructionAdminPage() {
+export default function InstructionsAdminPage() {
   return (
-    <MasterDataPanel<Instruction>
+    <MasterDataPanel<Row>
       title="Visitors — Instructions"
       entityName="Instruction"
-      breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Instructions'}]}
-      apiPath="/visitor-master/instructions"
-      blank={{'title':'','description':'','status':'1'}}
-      searchableKeys={["title"]}
+      breadcrumb={[{ label: 'Home', href: '/admin' }, { label: 'Visitors' }, { label: 'Instructions' }]}
+      apiPath="/visitors/admin/instructions"
+      blank={{ locationId: 0, detail: '', type: 'english', sortOrder: 0 }}
+      searchableKeys={['detail']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'Title', cell: (r) => <span style={{ fontWeight: 600 }}>{r.title}</span> },
-        { header: 'Instruction', cell: (r) => <span style={{ fontSize: 12, color: '#666' }}>{(r.description ?? '').slice(0, 100)}</span> },
-        { header: 'Status', width: 100, cell: (r) => (
-            <span style={{
-              background: r.status === '1' ? '#1ab394' : '#ed5565',
-              color: '#fff', borderRadius: 10, padding: '2px 10px',
-              fontSize: 11, fontWeight: 700,
-            }}>
-              {r.status === '1' ? 'Enable' : 'Disable'}
-            </span>
-          ) }
+        { header: 'Loc',  width: 70, cell: (r) => r.locationId },
+        { header: 'Lang', width: 90, cell: (r) => <span style={{ textTransform: 'capitalize' }}>{r.type}</span> },
+        { header: 'Order', width: 60, cell: (r) => r.sortOrder },
+        { header: 'Detail', cell: (r) => <span dangerouslySetInnerHTML={{ __html: (r.detail ?? '').slice(0, 160) }} /> },
       ]}
       fields={[
-        { name: 'title', label: 'Title', required: true },
-        { name: 'description', label: 'Instruction text', type: 'textarea' },
-        { name: 'status', label: 'Status', type: 'select', options: [{'value':'1','label':'Enable'},{'value':'0','label':'Disable'}] }
+        { name: 'locationId', label: 'Location Id', type: 'number', required: true },
+        { name: 'type',       label: 'Language',    type: 'select', options: [{ value: 'english', label: 'English' }, { value: 'hindi', label: 'Hindi' }] },
+        { name: 'sortOrder',  label: 'Sort Order',  type: 'number' },
+        { name: 'detail',     label: 'Instruction', type: 'textarea', required: true },
       ]}
     />
   );

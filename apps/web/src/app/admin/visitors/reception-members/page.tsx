@@ -16,17 +16,19 @@ export default function MemberAdminPage() {
       title="Visitors — Reception Members"
       entityName="Member"
       breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Reception Members'}]}
-      apiPath="/visitor-master/reception-members"
-      blank={{'userId':0,'locationId':0}}
-      searchableKeys={["userId"]}
+      apiPath="/visitors/admin/reception-members"
+      blank={{ name: '', email: '', locationId: 0 }}
+      searchableKeys={['name', 'email']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'User ID', cell: (r) => r.userId ?? r.user_id },
-        { header: 'Location ID', cell: (r) => r.locationId ?? r.location_id }
+        { header: 'Name', cell: (r) => <strong>{r.name}</strong> },
+        { header: 'Email', cell: (r) => <span style={{ color: '#1c84c6' }}>{r.email}</span> },
+        { header: 'Location Id', cell: (r) => r.locationId },
       ]}
       fields={[
-        { name: 'userId', label: 'User ID', type: 'number', required: true },
-        { name: 'locationId', label: 'Location ID', type: 'number' }
+        { name: 'name',       label: 'Name',         required: true },
+        { name: 'email',      label: 'Email',        required: true },
+        { name: 'locationId', label: 'Location Id',  type: 'number', required: true },
       ]}
     />
   );

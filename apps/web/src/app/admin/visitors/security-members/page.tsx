@@ -16,17 +16,17 @@ export default function MemberAdminPage() {
       title="Visitors — Security Members"
       entityName="Member"
       breadcrumb={[{'label':'Home','href':'/admin'},{'label':'Visitors'},{'label':'Security Members'}]}
-      apiPath="/visitor-master/security-members"
-      blank={{'userId':0,'locationId':0}}
-      searchableKeys={["userId"]}
+      apiPath="/visitors/admin/security-members"
+      blank={{ empId: 0, locationId: 0 }}
+      searchableKeys={['empId']}
       columns={[
         { header: 'Id', width: 60, cell: (r) => r.id },
-        { header: 'User ID', cell: (r) => r.userId ?? r.user_id },
-        { header: 'Location ID', cell: (r) => r.locationId ?? r.location_id }
+        { header: 'Employee Id', cell: (r) => r.empId },
+        { header: 'Location Id', cell: (r) => r.locationId },
       ]}
       fields={[
-        { name: 'userId', label: 'User ID', type: 'number', required: true },
-        { name: 'locationId', label: 'Location ID', type: 'number' }
+        { name: 'empId',      label: 'Employee Id', type: 'number', required: true },
+        { name: 'locationId', label: 'Location Id', type: 'number', required: true },
       ]}
     />
   );

@@ -95,6 +95,61 @@ export class VisitorsController {
     return this.svc.stats({ contactPerson: contactPerson ? +contactPerson : undefined });
   }
 
+  /**
+   * Today's pending appointments for the right-hand sidebar of Add Appointment.
+   * Legacy: `$todayAppointments` in AppointmentController::addAction.
+   */
+  @Get('appointments/today/pending')
+  todayPending(
+    @Req() req: any,
+    @Query('locationId') locationId?: string,
+    @Query('mine') mine?: string,
+  ) {
+    return this.svc.todayPendingAppointments(
+      mine === '1' ? req.user?.id : undefined,
+      locationId ? +locationId : undefined,
+    );
+  }
+
+  /** Visitors Pending for Card — approved appts where no check-in yet. */
+  @Get('appointments/pending-card')
+  pendingForCard(
+    @Req() req: any,
+    @Query('locationId') locationId?: string,
+    @Query('all') all?: string,
+  ) {
+    return this.svc.pendingForCard({
+      contactPerson: req.user?.id,
+      locationId: locationId ? +locationId : undefined,
+      all: all === '1',
+    });
+  }
+
+  /** Visitors Pending for Checkout — checked in, not checked out. */
+  @Get('appointments/pending-checkout')
+  pendingForCheckout(
+    @Req() req: any,
+    @Query('locationId') locationId?: string,
+    @Query('all') all?: string,
+  ) {
+    return this.svc.pendingForCheckout({
+      contactPerson: req.user?.id,
+      locationId: locationId ? +locationId : undefined,
+      all: all === '1',
+    });
+  }
+
+  /** Pending-for-Approval inbox for the logged-in employee. */
+  @Get('appointments/pending-approval')
+  pendingForApproval(
+    @Req() req: any,
+    @Query('locationId') locationId?: string,
+  ) {
+    return this.svc.pendingForApproval(req.user?.id, {
+      locationId: locationId ? +locationId : undefined,
+    });
+  }
+
   @Get('appointments/:id')
   getAppointment(@Param('id', ParseIntPipe) id: number) {
     return this.svc.getAppointment(id);

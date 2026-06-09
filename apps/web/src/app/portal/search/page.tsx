@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiFetch } from '@/lib/auth';
 
@@ -20,7 +20,19 @@ const KIND_META: Record<string, { icon: string; label: string; color: string }> 
   policy:   { icon: 'fa-shield',      label: 'Policies',   color: '#ed5565' },
 };
 
+/**
+ * Next.js 14 requires `useSearchParams()` consumers to live inside a
+ * Suspense boundary or the prod build fails. Wrap and forward.
+ */
 export default function SearchPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchInner />
+    </Suspense>
+  );
+}
+
+function SearchInner() {
   const params = useSearchParams();
   const q = params.get('q') ?? '';
   const [hits, setHits] = useState<SearchHit[]>([]);

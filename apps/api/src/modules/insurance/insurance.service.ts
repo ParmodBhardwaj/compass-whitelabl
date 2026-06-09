@@ -1,10 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+// Insurance models live in the manual/ bundle because the
+// insurance_documents/_faqs/_hyperlinks tables are not always present in the
+// regen dump. See packages/db/src/models/manual/index.ts.
 import {
   InsuranceDocuments,
   InsuranceFaqs,
   InsuranceHyperlinks,
-  Section,
-} from '@hero/db/src/models/generated';
+} from '@hero/db/src/models/manual';
+import { Section } from '@hero/db/src/models/generated';
 
 /**
  * Insurance Portal — Wave 3 module.

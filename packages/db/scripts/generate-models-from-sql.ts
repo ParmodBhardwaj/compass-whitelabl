@@ -172,14 +172,28 @@ function emit(table: Table): string {
   return lines.join('\n');
 }
 
+/**
+ * Tables owned by `packages/db/src/models/manual/`. The generator skips
+ * them so we never emit two model classes for the same table (which would
+ * crash Sequelize on initDb).
+ */
+const MANUAL_TABLES = new Set<string>([
+  'insurance_documents',
+  'insurance_faqs',
+  'insurance_hyperlinks',
+]);
+
 function main() {
   if (!existsSync(SQL_PATH)) {
     console.error(`SQL dump not found at ${SQL_PATH}`);
     process.exit(1);
   }
   const sql = readFileSync(SQL_PATH, 'utf8');
-  const tables = parseDump(sql);
-  console.log(`Parsed ${tables.length} tables`);
+  const parsed = parseDump(sql);
+  console.log(`Parsed ${parsed.length} tables`);
+  const tables = parsed.filter((t) => !MANUAL_TABLES.has(t.name));
+  const skipped = parsed.length - tables.length;
+  if (skipped > 0) console.log(`Skipping ${skipped} table(s) owned by manual/`);
   if (existsSync(OUT_DIR)) rmSync(OUT_DIR, { recursive: true, force: true });
   mkdirSync(OUT_DIR, { recursive: true });
   for (const t of tables) {

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiFetch } from '@/lib/auth';
@@ -24,7 +24,19 @@ interface Employee {
   empCode?: string;
 }
 
+/**
+ * Next.js 14 requires `useSearchParams()` consumers to live inside a
+ * Suspense boundary or the prod build fails. Wrap and forward.
+ */
 export default function SubmitIdeaPage() {
+  return (
+    <Suspense fallback={null}>
+      <SubmitIdeaInner />
+    </Suspense>
+  );
+}
+
+function SubmitIdeaInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const campaignIdParam = searchParams.get('campaignId');

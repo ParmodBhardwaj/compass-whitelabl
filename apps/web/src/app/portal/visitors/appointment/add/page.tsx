@@ -16,7 +16,7 @@
  *   Optional: Email, Laptop Number, Other Material, Visitor Materials (if any),
  *             Remarks (if any), Contact Person (only when "On behalf of …" is checked)
  */
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiFetch } from '@/lib/auth';
@@ -58,7 +58,19 @@ function defaultTimes(): { from: string; to: string; date: string } {
   return { date, from: `${hh}:${mm}`, to: `${hh2}:${mm2}` };
 }
 
+/**
+ * Next.js 14 requires `useSearchParams()` consumers to live inside a
+ * Suspense boundary or the prod build fails. Wrap and forward.
+ */
 export default function AddAppointmentPage() {
+  return (
+    <Suspense fallback={null}>
+      <AddAppointmentInner />
+    </Suspense>
+  );
+}
+
+function AddAppointmentInner() {
   const router = useRouter();
   const sp = useSearchParams();
   const prefillName   = sp.get('prefillName')   ?? '';

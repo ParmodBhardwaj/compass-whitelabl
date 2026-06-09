@@ -23,7 +23,13 @@ export function initDb(config: DbConfig): Sequelize {
     logging: config.logging ?? false,
     define: { timestamps: false, freezeTableName: true },
     pool: { max: 20, min: 0, idle: 10000 },
-    models: Object.values(require('./models/generated')) as any,
+    // Register both auto-generated and hand-maintained models. The manual
+    // bundle exists so models whose tables aren't in the regen dump (e.g.
+    // Insurance) still survive `pnpm db:generate-models`.
+    models: [
+      ...Object.values(require('./models/generated')),
+      ...Object.values(require('./models/manual')),
+    ] as any,
   });
   return sequelize;
 }

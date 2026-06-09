@@ -12,6 +12,10 @@
     "./src/models/generated": {
       "types": "./dist/models/generated/index.d.ts",
       "default": "./dist/models/generated/index.js"
+    },
+    "./src/models/manual": {
+      "types": "./dist/models/manual/index.d.ts",
+      "default": "./dist/models/manual/index.js"
     }
   },
   "scripts": {

@@ -1,10 +1,25 @@
 'use client';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { setTokens, safeNext } from '@/lib/auth';
 import { BRAND, copyrightLine } from '@/lib/brand';
 
+/**
+ * Next.js 14 (App Router) requires every component that reads search params
+ * via `useSearchParams()` to live inside a Suspense boundary. Without this
+ * the prod build fails with "useSearchParams() should be wrapped in a
+ * suspense boundary." The default export is the boundary; the real page
+ * lives in `LoginInner`.
+ */
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginInner />
+    </Suspense>
+  );
+}
+
+function LoginInner() {
   const sp = useSearchParams();
   // `?next=/portal/visitors/appointment/add` — sanitized to a same-origin path.
   const nextUrl = safeNext(sp.get('next'), '/portal');
